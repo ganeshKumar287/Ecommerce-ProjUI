@@ -1,0 +1,149 @@
+<div class="container py-4">
+
+    <h3 class="mb-4">➕ Create New Product</h3>
+
+    <form [formGroup]="productForm" (ngSubmit)="createProduct()" class="row g-3">
+
+        <!-- Product Name -->
+        <div class="col-md-6">
+
+            <label class="form-label">Product Name</label>
+
+            <input type="text" class="form-control" formControlName="productName" placeholder="Enter product name" />
+
+            <div class="text-danger mt-1" *ngIf="productForm.get('productName')?.touched &&
+                       productForm.get('productName')?.invalid">
+
+                Product name is required.
+
+            </div>
+
+        </div>
+
+
+        <!-- Category -->
+        <div class="col-md-6">
+
+            <label class="form-label">Category</label>
+
+            <select class="form-select" formControlName="categoryId">
+
+                <option value="" disabled>
+                    -- Select Category --
+                </option>
+
+                <option *ngFor="let cat of categories" [value]="cat.categoryId">
+
+                    {{ cat.categoryName }}
+
+                </option>
+
+            </select>
+
+            <div class="text-danger mt-1" *ngIf="productForm.get('categoryId')?.touched &&
+                       productForm.get('categoryId')?.invalid">
+
+                Please select a category.
+
+            </div>
+
+        </div>
+
+
+        <!-- Price -->
+        <div class="col-md-6">
+
+            <label class="form-label">Price (₹)</label>
+
+            <input type="number" class="form-control" formControlName="price" placeholder="Enter price" />
+
+            <div class="text-danger mt-1" *ngIf="productForm.get('price')?.touched &&
+                       productForm.get('price')?.invalid">
+
+                <span *ngIf="productForm.get('price')?.errors?.['required']">
+                    Price is required.
+                </span>
+
+                <span *ngIf="productForm.get('price')?.errors?.['min']">
+                    Price cannot be negative.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- Discount -->
+        <div class="col-md-6">
+
+            <label class="form-label">Discount (%)</label>
+
+            <input type="number" class="form-control" formControlName="discount" placeholder="Enter discount" />
+
+            <div class="text-danger mt-1" *ngIf="productForm.get('discount')?.touched &&
+                       productForm.get('discount')?.invalid">
+
+                Discount must be between 0 and 100%.
+
+            </div>
+
+        </div>
+                <div class="col-md-6">
+            
+                <label class="form-label">Quantity</label>
+            
+                <input type="number" class="form-control" formControlName="quantity" placeholder="Enter quantity" />
+            
+                <div class="text-danger mt-1" *ngIf="productForm.get('quantity')?.touched &&
+                       productForm.get('quantity')?.invalid">
+                    <span *ngIf="productForm.get('quantity')?.errors?.['required']">
+                    quantity is required.
+                    </span>
+
+                    <span *ngIf="productForm.get('quantity')?.errors?.['min']">
+                     Quantity must be at least 1.
+        </span>
+
+
+                </div>
+                
+
+            </div>
+
+        <!-- Description -->
+        <div class="col-md-12">
+
+            <label class="form-label">Description</label>
+
+            <textarea class="form-control" rows="3" formControlName="description"
+                placeholder="Enter product description">
+            </textarea>
+
+        </div>
+
+
+        <!-- Image URL -->
+        <div class="col-md-12">
+
+            <label class="form-label">Image URL</label>
+
+            <input type="text" class="form-control" formControlName="productImage" placeholder="Enter image URL" />
+
+        </div>
+
+
+        <!-- Submit -->
+        <div class="col-12">
+
+            <button type="submit" class="btn btn-primary" [disabled]="productForm.invalid">
+
+                <i class="bi bi-check-circle me-1"></i>
+                Create Product
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>

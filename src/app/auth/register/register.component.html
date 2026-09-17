@@ -1,0 +1,86 @@
+<div class="container d-flex justify-content-center align-items-start min-vh-100 pt-5">
+    <div class="card shadow-lg p-4 mt-5" style="width: 100%; max-width: 400px;">
+      <div class="card-body">
+        <h3 class="card-title text-center mb-4">📝 Create your account</h3>
+  
+        <form [formGroup]="signupForm" (ngSubmit)="signup()">
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              class="form-control"
+              placeholder="Enter username"
+              formControlName="username"
+              required />
+              <div class="text-danger" *ngIf="signupForm.get('username')?.touched &&
+                                   signupForm.get('username')?.hasError('required')">
+                            Username is required.
+                </div>
+
+          </div>
+          
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="form-control"
+              placeholder="Enter email"
+              formControlName="email"
+              required />
+              <div class="text-danger" *ngIf="signupForm.get('email')?.touched &&
+                           signupForm.get('email')?.hasError('required')">
+                            Email is required.
+          </div>
+          </div>
+  
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="form-control"
+              placeholder="Enter password"
+              formControlName="password"
+              required />
+              <div class="text-danger" *ngIf="signupForm.get('password')?.touched &&
+                                   signupForm.get('password')?.hasError('required')">
+                            Password is required.
+                </div>
+
+          </div>
+  
+          <div class="mb-3">
+            <label for="confirmPassword" class="form-label">Confirm Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              class="form-control"
+              placeholder="Re-enter password"
+              formControlName="confirmPassword"
+              required />
+              <div class="text-danger" *ngIf="signupForm.get('confirmPassword')?.touched &&
+                                   signupForm.get('confirmPassword')?.hasError('required')">
+                            please reenter password!
+            </div>
+          </div>
+  
+          <div class="d-grid">
+            <button type="submit" class="btn btn-success" [disabled]="signupForm.invalid">
+              <i class="bi bi-person-plus me-2"></i> Sign Up
+              </button>
+            </div>
+        </form>
+  
+        <div class="mt-3 text-center">
+          <span>Already have an account?</span>
+          <a  class="btn btn-link p-0 ms-1" routerLink="/login">Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
