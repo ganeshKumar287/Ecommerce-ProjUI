@@ -34,7 +34,7 @@ export class AuthInterceptor implements HttpInterceptor {
           // Send request and handle errors
     return next.handle(req).pipe(
 
-      catchError((err: HttpErrorResponse) => {
+     /* catchError((err: HttpErrorResponse) => {
 
         // JWT expired / invalid / unauthorized
         if (err.status === 401) {
@@ -53,8 +53,8 @@ export class AuthInterceptor implements HttpInterceptor {
 
         // Pass error to the component/service
         return throwError(() => err);
-      })
+      })*/
 
     );
-  }
+      }
 }

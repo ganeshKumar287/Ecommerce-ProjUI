@@ -14,6 +14,7 @@ import { ProfileComponent } from './user/profile/profile.component';
 import { WishlistComponent } from './user/wishlist/wishlist.component';
 import { CreateProductComponent } from './products/create-product/create-product.component';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
+import { ProductManageComponent } from './products/product-manage/product-manage/product-manage.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { AuthInterceptor } from './interceptor/auth.interceptor';
     ProductlistComponent,
     ProfileComponent,
     WishlistComponent,
-    CreateProductComponent
+    CreateProductComponent,
+    ProductManageComponent
   ],
   imports: [
     BrowserModule,

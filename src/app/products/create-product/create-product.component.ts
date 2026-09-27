@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProductServiceService } from 'src/app/services/product-service.service';
 
 @Component({
@@ -9,10 +9,15 @@ import { ProductServiceService } from 'src/app/services/product-service.service'
   styleUrls: ['./create-product.component.css']
 })
 export class CreateProductComponent {
-constructor(private productService :ProductServiceService, private router: Router,private fb: FormBuilder){}
+constructor(private productService :ProductServiceService, private router: Router,private fb: FormBuilder,private route: ActivatedRoute,
+){}
     productForm!: FormGroup;
 
  categories: any;
+
+  productId: number | null = null;
+  isEditMode = false;
+  loading = false;
 
   ngOnInit(): void {
     this.initializeForm();
@@ -23,6 +28,66 @@ constructor(private productService :ProductServiceService, private router: Route
         alert('Failed to load categories');
       }
     });
+    this.route.paramMap.subscribe((params) => {
+      const id = params.get('id');
+      if (id) {
+        this.productId = Number(id);
+        this.isEditMode = true;
+        this.loadProduct(this.productId);
+      }
+    });
+  }
+
+  loadProduct(id: number): void {
+    this.loading = true;
+    this.productService.getProductById(id).subscribe({
+      next: (product: any) => {
+        console.log('Product loaded:', product);
+        this.productForm.patchValue({
+          productName: product.productName,
+          categoryId: product.categoryId,
+          price: product.price,
+          discount: product.discount,
+          description: product.description,
+          quantity: product.quantity,
+          productImage: product.productImage
+        });
+        console.log("new string");
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Failed to load product:', err);
+        alert(err.error?.message || 'Failed to load product');
+        this.loading = false;
+        this.router.navigate(['/products']);
+      },
+    });
+  }
+
+  saveProduct(): void {
+    if (this.productForm.invalid) {
+      this.productForm.markAllAsTouched();
+      return;
+    }
+    const product = this.productForm.value;
+    if (this.isEditMode && this.productId) {
+      this.updateProduct(product);
+    } else {
+      this.createProduct(product);
+    }
+  }
+  updateProduct(product: any): void {
+    this.productService.updateProduct(this.productId, product).subscribe({
+      next: () => {
+        alert('Product updated successfully');
+        this.router.navigate(['/products']);
+      },
+      error: (err) => {
+        console.error('Update product error:', err);
+        const msg = err.error?.message || 'Failed to update product';
+        alert(msg);
+      },
+    });
   }
 
   initializeForm(){
@@ -31,6 +96,7 @@ constructor(private productService :ProductServiceService, private router: Route
 
       categoryId: ['', Validators.required],
 
+
       price: [
         '',
         [
@@ -38,7 +104,13 @@ constructor(private productService :ProductServiceService, private router: Route
           Validators.min(0)
         ]
       ],
-      quantity:['',Validators.required,Validators.min(1)],
+    quantity: [
+      '',
+      [
+        Validators.required,
+        Validators.min(1)
+      ]
+    ],
       discount: [
         '',
         [
@@ -52,14 +124,14 @@ constructor(private productService :ProductServiceService, private router: Route
       productImage: ['']
     });
   }
-createProduct(): void {
+createProduct(product): void {
 
-  if (this.productForm.invalid) {
+/*  if (this.productForm.invalid) {
     this.productForm.markAllAsTouched();
     return;
-  }
+  }*/
 
-  const product = this.productForm.value;
+//  const product = this.productForm.value;
 
   this.productService
     .createProduct( product)
