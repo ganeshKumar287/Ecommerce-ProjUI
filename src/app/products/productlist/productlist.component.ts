@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CartService } from 'src/app/services/cart.service';
 import { ProductServiceService } from 'src/app/services/product-service.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { ProductServiceService } from 'src/app/services/product-service.service'
 })
 export class ProductlistComponent {
 constructor(private productService:ProductServiceService,
-  private route :ActivatedRoute
+  private route :ActivatedRoute,private cartService:CartService
   // private wishlistService = WishlistService
   ){}
  
@@ -132,15 +133,15 @@ buyNow(productId: number) {
 
   addToWishlist(productId: number) {
   }
-  addToCart(productId: number) {
- /*   this.cartService.addToCart(productId, 1).subscribe({
+addToCart(productId: number) {
+    this.cartService.addToCart(productId, 1).subscribe({
       next: (res) => {
         // console.log('Add to cart response:', res);
         if (res) {
           this.cartService.getCart().subscribe({
             next: (cart) => {
               alert('Product added to cart!');
-              this.cartService.notifyCartChange(); // Notify other component
+              // this.cartService.notifyCartChange(); // Notify other component
             },
             error: (err) => {
               alert('Failed to fetch cart.');
@@ -153,8 +154,8 @@ buyNow(productId: number) {
         const backendMessage = err.error?.message || 'Something went wrong.';
         alert('Failed to add to cart: ' + backendMessage);
       }
-    });*/
-  }
+    });
+  }  
 
   searchProducts(term: string): void {
    /* this.loading = true;
